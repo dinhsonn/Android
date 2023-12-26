@@ -1,246 +1,138 @@
+import React, { useState, useEffect } from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    ScrollView,
-    Pressable,
-    TextInput,
-    ImageBackground,
-    Dimensions,
-  } from "react-native";
-  import React ,{useState} from "react";
-  import { AntDesign, Feather } from "@expo/vector-icons";
-  import { Ionicons } from "@expo/vector-icons";
-  import { useNavigation, useRoute } from "@react-navigation/native";
-  import { MaterialCommunityIcons } from "@expo/vector-icons";
-  import { useDispatch, useSelector } from "react-redux";
-  import { addToCart } from "../redux/CartReducer";
-  
-  const ProductInfoScreen = () => {
-    const route = useRoute();
-    const { width } = Dimensions.get("window");
-    const navigation = useNavigation();
-    const [addedToCart, setAddedToCart] = useState(false);
-    const height = (width * 100) / 100;
-    const dispatch = useDispatch();
-    const addItemToCart = (item) => {
-      setAddedToCart(true);
-      dispatch(addToCart(item));
-      setTimeout(() => {
-        setAddedToCart(false);
-      }, 60000);
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../redux/CartReducer';
+
+const ProductInfoScreen = ({ route }) => {
+  const { item } = route.params;
+  const [productDetails, setProductDetails] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await fetch(`https://fakestoreapi.com/products/${item.id}`);
+        const data = await response.json();
+        setProductDetails(data);
+      } catch (error) {
+        console.error('Error fetching product details', error);
+      }
     };
-    const cart = useSelector((state) => state.cart.cart);
-    console.log(cart);
-    return (
-      <ScrollView
-        style={{ marginTop: 55, flex: 1, backgroundColor: "white" }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View
-          style={{
-            backgroundColor: "#00CED1",
-            padding: 10,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Pressable
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginHorizontal: 7,
-              gap: 10,
-              backgroundColor: "white",
-              borderRadius: 3,
-              height: 38,
-              flex: 1,
-            }}
-          >
-            <AntDesign
-              style={{ paddingLeft: 10 }}
-              name="search1"
-              size={22}
-              color="black"
-            />
-            <TextInput placeholder="Search Amazon.in" />
-          </Pressable>
-  
-          <Feather name="mic" size={24} color="black" />
-        </View>
-  
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {route.params.carouselImages.map((item, index) => (
-            <ImageBackground
-              style={{ width, height, marginTop: 25, resizeMode: "contain" }}
-              source={{ uri: item }}
-              key={index}
-            >
-              <View
-                style={{
-                  padding: 20,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <View
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 20,
-                    backgroundColor: "#C60C30",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      textAlign: "center",
-                      fontWeight: "600",
-                      fontSize: 12,
-                    }}
-                  >
-                    20% off
-                  </Text>
-                </View>
-  
-                <View
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 20,
-                    backgroundColor: "#E0E0E0",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "row",
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="share-variant"
-                    size={24}
-                    color="black"
-                  />
-                </View>
-              </View>
-  
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  backgroundColor: "#E0E0E0",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  marginTop: "auto",
-                  marginLeft: 20,
-                  marginBottom: 20,
-                }}
-              >
-                <AntDesign name="hearto" size={24} color="black" />
-              </View>
-            </ImageBackground>
-          ))}
-        </ScrollView>
-  
-        <View style={{ padding: 10 }}>
-          <Text style={{ fontSize: 15, fontWeight: "500" }}>
-            {route?.params?.title}
-          </Text>
-  
-          <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 6 }}>
-            ₹{route?.params?.price}
-          </Text>
-        </View>
-  
-        <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
-  
-        <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
-          <Text>Color: </Text>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            {route?.params?.color}
-          </Text>
-        </View>
-  
-        <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
-          <Text>Size: </Text>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            {route?.params?.size}
-          </Text>
-        </View>
-  
-        <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
-  
-        <View style={{ padding: 10 }}>
-          <Text style={{ fontSize: 15, fontWeight: "bold", marginVertical: 5 }}>
-            Total : ₹{route.params.price}
-          </Text>
-          <Text style={{ color: "#00CED1" }}>
-            FREE delivery Tomorrow by 3 PM.Order within 10hrs 30 mins
-          </Text>
-  
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 5,
-              alignItems: "center",
-              gap: 5,
-            }}
-          >
-            <Ionicons name="location" size={24} color="black" />
-  
-            <Text style={{ fontSize: 15, fontWeight: "500" }}>
-              Deliver To Sujan - Bangalore 560019
-            </Text>
-          </View>
-        </View>
-  
-        <Text style={{ color: "green", marginHorizontal: 10, fontWeight: "500" }}>
-          IN Stock
-        </Text>
-  
-        <Pressable
-          onPress={() => addItemToCart(route?.params?.item)}
-          style={{
-            backgroundColor: "#FFC72C",
-            padding: 10,
-            borderRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 10,
-            marginVertical: 10,
-          }}
-        >
-          {addedToCart ? (
-            <View>
-              <Text>Added to Cart</Text>
-            </View>
-          ) : (
-            <Text>Add to Cart</Text>
-          )}
-        </Pressable>
-  
-        <Pressable
-          style={{
-            backgroundColor: "#FFAC1C",
-            padding: 10,
-            borderRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 10,
-            marginVertical: 10,
-          }}
-        >
-          <Text>Buy Now</Text>
-        </Pressable>
-      </ScrollView>
-    );
+
+    fetchProductDetails();
+  }, [item.id]);
+
+  const handleBackPress = () => {
+    navigation.goBack(); // Go back to the previous screen
   };
-  
-  export default ProductInfoScreen;
-  
-  const styles = StyleSheet.create({});
-  
+
+  const addItemToCart = () => {
+    setAddedToCart(true);
+    dispatch(addToCart(item));
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 3000); // Reset the addedToCart state after 3 seconds (adjust as needed)
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      {productDetails ? (
+        <>
+          <Image style={styles.image} source={{ uri: productDetails.image }} />
+          <View style={styles.productInfo}>
+            <Text style={styles.title}>{productDetails.title}</Text>
+            <Text style={styles.description}>{productDetails.description}</Text>
+            <Text style={styles.price}>₹{productDetails.price}</Text>
+            <Text style={styles.rating}>Rating: {productDetails.rating.rate}</Text>
+            <Text style={styles.stockText}>IN Stock</Text>
+          </View>
+        </>
+      ) : (
+        <Text>Loading...</Text>
+      )}
+
+      {/* Add to Cart Button */}
+      <Pressable onPress={addItemToCart} style={styles.addButton}>
+        {addedToCart ? <Text>Added to Cart</Text> : <Text>Add to Cart</Text>}
+      </Pressable>
+
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+        <Text style={styles.backButtonText}>Back to Home</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  image: {
+    width: '100%',
+    height: 300,
+    resizeMode: 'contain',
+  },
+  productInfo: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  description: {
+    marginBottom: 10,
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  rating: {
+    color: '#FFC72C',
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  stockText: {
+    color: 'green',
+    fontSize: 16,
+    fontWeight: '500',
+    marginVertical: 10,
+  },
+  backButton: {
+    marginTop: 20,
+    marginHorizontal: 16,
+    padding: 10,
+    backgroundColor: '#4285F4',
+    borderRadius: 5,
+  },
+  backButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  addButton: {
+    backgroundColor: '#FFC72C',
+    padding: 10,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginVertical: 10,
+  },
+});
+
+export default ProductInfoScreen;
+

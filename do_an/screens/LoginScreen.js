@@ -30,9 +30,6 @@ const LoginScreen = () => {
       Alert.alert("Validation Error", "Please enter both email and password");
       return;
     }
-
-    // Perform your authentication logic here, for example, send a request to your server
-    // Replace this with your actual authentication logic
     const userCredentials = {
       email: email,
       password: password,
@@ -50,12 +47,10 @@ const LoginScreen = () => {
       // Authentication successful
       console.log(response);
 
-      // You can use the token for further processing
       const token = response.data.token;
 
       navigation.navigate("Main");
     } else {
-      // Authentication failed
       Alert.alert("Login Failed", "Invalid email or password");
     }
   };

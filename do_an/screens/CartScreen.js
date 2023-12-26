@@ -63,18 +63,16 @@ import {
               size={22}
               color="black"
             />
-            <TextInput placeholder="Search Amazon.in" />
+            <TextInput placeholder="Search" />
           </Pressable>
   
           <Feather name="mic" size={24} color="black" />
         </View>
   
         <View style={{ padding: 10, flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontSize: 18, fontWeight: "400" }}>Subtotal : </Text>
+          <Text style={{ fontSize: 18, fontWeight: "400" }}>Tổng đơn hàng : </Text>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>{total}</Text>
-        </View>
-        <Text style={{ marginHorizontal: 10 }}>EMI details Available</Text>
-  
+        </View>  
         <Pressable
           onPress={() => navigation.navigate("Confirm")}
           style={{
@@ -87,7 +85,7 @@ import {
             marginTop: 10,
           }}
         >
-          <Text>Proceed to Buy ({cart.length}) items</Text>
+          <Text>Thanh toán ({cart.length}) sản phẩm</Text>
         </Pressable>
   
         <Text
@@ -238,31 +236,6 @@ import {
                   marginBottom: 15,
                 }}
               >
-                <Pressable
-                  style={{
-                    backgroundColor: "white",
-                    paddingHorizontal: 8,
-                    paddingVertical: 10,
-                    borderRadius: 5,
-                    borderColor: "#C0C0C0",
-                    borderWidth: 0.6,
-                  }}
-                >
-                  <Text>Save For Later</Text>
-                </Pressable>
-  
-                <Pressable
-                  style={{
-                    backgroundColor: "white",
-                    paddingHorizontal: 8,
-                    paddingVertical: 10,
-                    borderRadius: 5,
-                    borderColor: "#C0C0C0",
-                    borderWidth: 0.6,
-                  }}
-                >
-                  <Text>See More Like this</Text>
-                </Pressable>
               </Pressable>
             </View>
           ))}

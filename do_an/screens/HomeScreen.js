@@ -16,13 +16,6 @@ const HomeScreen = () => {
 
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState("jewelery");
-  const [items, setItems] = useState([
-    { label: "Men's clothing", value: "men's clothing" },
-    { label: "jewelery", value: "jewelery" },
-    { label: "electronics", value: "electronics" },
-    { label: "women's clothing", value: "women's clothing" },
-  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,38 +32,7 @@ const HomeScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <View
-        style={{
-          marginTop: 20,
-          backgroundColor: "#00CED1",
-          padding: 10,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Pressable
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 7,
-            gap: 10,
-            backgroundColor: "white",
-            borderRadius: 3,
-            height: 38,
-            flex: 1,
-          }}
-        >
-          <AntDesign
-            style={{ paddingLeft: 10 }}
-            name="search1"
-            size={22}
-            color="black"
-          />
-          <TextInput placeholder="Search Amazon.in" />
-        </Pressable>
-
-        <Feather name="mic" size={24} color="black" />
-      </View>
+      {/* ... rest of your code ... */}
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}
@@ -92,31 +54,6 @@ const HomeScreen = () => {
                 marginTop: 15,
               }}
             />
-            <Text
-              style={{
-                height: 1,
-                borderColor: "#D0D0D0",
-                borderWidth: 2,
-                marginTop: 15,
-              }}
-            />
-            <DropDownPicker
-              style={{
-                borderColor: "#B7B7B7",
-                height: 30,
-                marginBottom: open ? 120 : 15,
-              }}
-              open={open}
-              value={category}
-              items={items}
-              setOpen={setOpen}
-              setValue={setCategory}
-              setItems={setItems}
-              placeholder="choose category"
-              placeholderStyle={styles.placeholderStyles}
-              zIndex={open ? 1000 : 0}
-              zIndexInverse={open ? 0 : 1000}
-            />
           </>
         }
         renderItem={({ item }) => <ProductItem item={item} />}
@@ -125,9 +62,5 @@ const HomeScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  placeholderStyles: {
-  },
-});
-
 export default HomeScreen;
+

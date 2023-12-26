@@ -14,7 +14,6 @@ const OrderScreen = () => {
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <LottieView
         source={require("../assets/thumbs.json")}
-        // ref={animation}
         style={{
           height: 260,
           width: 300,

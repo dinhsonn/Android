@@ -12,7 +12,6 @@ import { Ionicons } from "@expo/vector-icons";
 import ProductInfoScreen from "../screens/ProductInfoScreen";
 import CartScreen from "../screens/CartScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import ConfirmationScreen from "../screens/ConfirmationScreen";
 import OrderScreen from "../screens/OrderScreen";
 
 const StackNavigator = () => {
@@ -93,12 +92,6 @@ const StackNavigator = () => {
           component={ProductInfoScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="Confirm"
-          component={ConfirmationScreen}
-          options={{ headerShown: false }}
-        />
-
         <Stack.Screen
           name="Order"
           component={OrderScreen}

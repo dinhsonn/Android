@@ -2,10 +2,14 @@ import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/CartReducer";
+import { useNavigation } from "@react-navigation/native";
+
 
 const ProductItem = ({ item }) => {
   const [addedToCart, setAddedToCart] = useState(false);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const addItemToCart = (item) => {
     setAddedToCart(true);
     dispatch(addToCart(item));
@@ -13,55 +17,88 @@ const ProductItem = ({ item }) => {
       setAddedToCart(false);
     }, 60000);
   };
+  const navigateToDetails = () => {
+    navigation.navigate("Info", { item });
+  };
+
   return (
-    <Pressable style={{ marginHorizontal: 20, marginVertical: 25 }}>
-      <Image
-        style={{ width: 150, height: 150, resizeMode: "contain" }}
-        source={{ uri: item?.image }}
-      />
+    <Pressable style={styles.productContainer} onPress={navigateToDetails}>
+      <View style={styles.product}>
+        <Image
+          style={styles.image}
+          source={{ uri: item?.image }}
+        />
 
-      <Text numberOfLines={1} style={{ width: 150, marginTop: 10 }}>
-        {item?.title}
-      </Text>
-
-      <View
-        style={{
-          marginTop: 5,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>₹{item?.price}</Text>
-        <Text style={{ color: "#FFC72C", fontWeight: "bold" }}>
-          {item?.rating?.rate} ratings
+        <Text numberOfLines={1} style={styles.title}>
+          {item?.title}
         </Text>
-      </View>
 
-      <Pressable
-        onPress={() => addItemToCart(item)}
-        style={{
-          backgroundColor: "#FFC72C",
-          padding: 10,
-          borderRadius: 20,
-          justifyContent: "center",
-          alignItems: "center",
-          marginHorizontal: 10,
-          marginTop: 10,
-        }}
-      >
-        {addedToCart ? (
-          <View>
-            <Text>Added to Cart</Text>
-          </View>
-        ) : (
-          <Text>Add to Cart</Text>
-        )}
-      </Pressable>
+        <View style={styles.priceContainer}>
+          <Text style={styles.price}>₹{item?.price}</Text>
+          <Text style={styles.rating}>{item?.rating?.rate} ratings</Text>
+        </View>
+
+        <Pressable
+          onPress={() => addItemToCart(item)}
+          style={styles.addButton}
+        >
+          {addedToCart ? (
+            <Text>Thêm thành công</Text>
+          ) : (
+            <Text>Thêm vào giỏ hàng</Text>
+          )}
+        </Pressable>
+      </View>
     </Pressable>
   );
 };
 
-export default ProductItem;
+const styles = StyleSheet.create({
+  productContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+    marginVertical: 25,
+  },
+  product: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+  },
+  image: {
+    width: "100%",
+    height: 150,
+    resizeMode: "contain",
+  },
+  title: {
+    width: "100%",
+    marginTop: 10,
+  },
+  priceContainer: {
+    marginTop: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  price: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  rating: {
+    color: "#FFC72C",
+    fontWeight: "bold",
+  },
+  addButton: {
+    backgroundColor: "#FFC72C",
+    padding: 10,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+  },
+});
 
-const styles = StyleSheet.create({});
+export default ProductItem;
