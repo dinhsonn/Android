@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,52 +13,38 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("test");
-  const [password, setPassword] = useState("123");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
-  useEffect(() => {
-    // Your useEffect code here
-    return () => {
-      // Cleanup code here
-    };
-  }, []);
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:8384/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
 
-  const handleLogin = () => {
-    // Validate the email and password (you can add more validation if needed)
-    if (!email || !password) {
-      Alert.alert("Validation Error", "Please enter both email and password");
-      return;
-    }
-    const userCredentials = {
-      email: email,
-      password: password,
-    };
-
-    // Simulate a response from the server
-    const response = {
-      success: true,
-      data: {
-        token: "your_mocked_token_here",
-      },
-    };
-
-    if (response.success) {
-      // Authentication successful
-      console.log(response);
-
-      const token = response.data.token;
-
-      navigation.navigate("Main");
-    } else {
-      Alert.alert("Login Failed", "Invalid email or password");
+      if (response.ok) {
+        const user = await response.json();
+        // Đăng nhập thành công, bạn có thể lưu thông tin người dùng vào trạng thái ứng dụng hoặc AsyncStorage
+        // sau đó chuyển hướng đến màn hình chính hoặc thực hiện các hành động khác
+        navigation.navigate("Home"); // Thay "Home" bằng tên màn hình chính của bạn
+      } else {
+        Alert.alert("Đăng nhập thất bại", "Tên người dùng hoặc mật khẩu không đúng");
+      }
+    } catch (error) {
+      console.error("Lỗi trong quá trình đăng nhập:", error);
     }
   };
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: "white", alignItems: "center", marginTop: 50 }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white", alignItems: "center", marginTop: 50 }}>
       <View>
         <Image
           style={{ width: 150, height: 100 }}
@@ -78,7 +64,7 @@ const LoginScreen = () => {
               color: "#041E42",
             }}
           >
-            Login In to your Account
+            Đăng nhập vào tài khoản của bạn
           </Text>
         </View>
 
@@ -95,16 +81,16 @@ const LoginScreen = () => {
             }}
           >
             <TextInput
-              value={email}
-              onChangeText={(text) => setEmail(text)}
+              value={username}
+              onChangeText={(text) => setUsername(text)}
               style={{
                 marginLeft: 10,
                 color: "gray",
                 marginVertical: 10,
                 width: 200,
-                fontSize: email ? 16 : 16,
+                fontSize: username ? 16 : 16,
               }}
-              placeholder="enter your Email"
+              placeholder="Nhập tên đăng nhập của bạn"
             />
           </View>
         </View>
@@ -131,7 +117,7 @@ const LoginScreen = () => {
                 width: 300,
                 fontSize: password ? 16 : 16,
               }}
-              placeholder="enter your Password"
+              placeholder="Nhập mật khẩu của bạn"
             />
           </View>
         </View>
@@ -144,10 +130,10 @@ const LoginScreen = () => {
             justifyContent: "space-between",
           }}
         >
-          <Text>Keep me logged in</Text>
+          <Text>Giữ tôi đăng nhập</Text>
 
           <Text style={{ color: "#007FFF", fontWeight: "500" }}>
-            Forgot Password
+            Quên mật khẩu
           </Text>
         </View>
 
@@ -172,13 +158,13 @@ const LoginScreen = () => {
               fontWeight: "bold",
             }}
           >
-            Login
+            Đăng nhập
           </Text>
         </Pressable>
 
         <Pressable>
           <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
-            Don't have an account? Sign Up
+            Bạn chưa có tài khoản? Đăng ký
           </Text>
         </Pressable>
       </KeyboardAvoidingView>

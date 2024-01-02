@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,12 +11,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import ProductInfoScreen from "../screens/ProductInfoScreen";
 import CartScreen from "../screens/CartScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import OrderScreen from "../screens/OrderScreen";
+import { ViewPropTypes } from "deprecated-react-native-prop-types"; // Import ViewPropTypes from the deprecated package
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
+  
   function BottomTabs() {
     return (
       <Tab.Navigator>
@@ -32,21 +33,6 @@ const StackNavigator = () => {
                 <Entypo name="home" size={24} color="#008E97" />
               ) : (
                 <AntDesign name="home" size={24} color="black" />
-              ),
-          }}
-        />
-
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarLabelStyle: { color: "#008E97" },
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <Ionicons name="person" size={24} color="#008E97" />
-              ) : (
-                <Ionicons name="person-outline" size={24} color="black" />
               ),
           }}
         />
@@ -69,6 +55,7 @@ const StackNavigator = () => {
       </Tab.Navigator>
     );
   }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
