@@ -2,27 +2,25 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"; // Import the bottom tab navigator
+import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons"; // Import icons
 import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
 import HomeScreen from "../screens/HomeScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import ProductInfoScreen from "../screens/ProductInfoScreen";
-import CartScreen from "../screens/CartScreen";
-import OrderScreen from "../screens/OrderScreen";
-import { ViewPropTypes } from "deprecated-react-native-prop-types"; // Import ViewPropTypes from the deprecated package
+import ProductDetails from "../screens/ProductDetail";
+import Cart from "../screens/Cart";
+import Register from "../screens/Register";
+import Profile from "../screens/Profile";
+import SearchItem from "../screens/SearchItem";
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator(); // Create a bottom tab navigator
 
 const StackNavigator = () => {
-  const Stack = createNativeStackNavigator();
-  const Tab = createBottomTabNavigator();
-  
   function BottomTabs() {
     return (
       <Tab.Navigator>
         <Tab.Screen
-          name="Home"
+          name="StackHome"
           component={HomeScreen}
           options={{
             tabBarLabel: "Home",
@@ -36,10 +34,9 @@ const StackNavigator = () => {
               ),
           }}
         />
-
         <Tab.Screen
           name="Cart"
-          component={CartScreen}
+          component={Cart}
           options={{
             tabBarLabel: "Cart",
             tabBarLabelStyle: { color: "#008E97" },
@@ -52,38 +49,32 @@ const StackNavigator = () => {
               ),
           }}
         />
+            <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarLabelStyle: { color: "#008E97" },
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <Ionicons name="person" size={24} color="#008E97" />
+              ) : (
+                <Ionicons name="person-outline" size={24} color="black" />
+              ),
+          }}
+        />
       </Tab.Navigator>
     );
   }
-
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Main"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Info"
-          component={ProductInfoScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Order"
-          component={OrderScreen}
-          options={{ headerShown: false }}
-        />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Home" component={BottomTabs} />
+        <Stack.Screen name="ProductDetail" component={ProductDetails} />
+        <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="Search" component={SearchItem} />
       </Stack.Navigator>
     </NavigationContainer>
   );
