@@ -1,12 +1,12 @@
+// SearchItem.js
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, FlatList, StyleSheet,Pressable } from "react-native";
+import { View, Text, TextInput, FlatList, StyleSheet, Pressable } from "react-native";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
-
 import { useNavigation } from "@react-navigation/native";
 
 const SearchItem = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   const [keyword, setKeyword] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const SearchItem = () => {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`http://192.168.137.174:8384/products`);
+        const response = await axios.get(`http://192.168.137.244:8384/products`);
         setProducts(response.data);
 
         setLoading(false);
@@ -36,15 +36,22 @@ const SearchItem = () => {
   }, [keyword]);
 
   const filteredProducts = products.filter(
-    (product) => product.name.toLowerCase() === keyword.toLowerCase()
+    (product) => product.name.toLowerCase().includes(keyword.toLowerCase())
   );
 
+  const navigateToProductDetail = (productName) => {
+    const selectedProduct = products.find((product) => product.name === productName);
+    if (selectedProduct) {
+      navigation.navigate("ProductDetail", { item: selectedProduct });
+    }
+  };
+
   return (
-    
     <View style={styles.container}>
-                <Pressable style={{ marginTop:20 }} onPress={() => navigation.goBack()}>
-          <FontAwesome name={"arrow-circle-left"} size={28} color="black" />
-        </Pressable>
+      <Pressable style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <FontAwesome name={"arrow-circle-left"} size={28} color="black" />
+      </Pressable>
+      <Text>Tìm kiếm sản phẩm</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -55,61 +62,83 @@ const SearchItem = () => {
       </View>
 
       <View style={styles.resultsContainer}>
-        {loading && <Text>Đang tìm kiếm...</Text>}
+        {loading && <Text style={styles.loadingText}>Đang tìm kiếm...</Text>}
 
         {error && <Text style={styles.errorText}>{error}</Text>}
 
-        {!loading && filteredProducts.length === 0 && <Text>Không có sản phẩm nào.</Text>}
+        {!loading && filteredProducts.length === 0 && (
+          <Text style={styles.noResultsText}>Không có sản phẩm nào.</Text>
+        )}
 
         {!loading && filteredProducts.length > 0 && (
-          <FlatList
-            data={filteredProducts}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.productItem}>
-                <Text>{item.name}</Text>
-                {/* Hiển thị thông tin sản phẩm khác theo yêu cầu của bạn */}
-              </View>
-            )}
-          />
+          <View>
+            <Text style={styles.searchResultsText}>Kết quả tìm kiếm:</Text>
+            <FlatList
+              data={filteredProducts}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <Pressable
+                  style={styles.productItem}
+                  onPress={() => navigateToProductDetail(item.name)}
+                >
+                  <Text style={styles.productName}>{item.name}</Text>
+                </Pressable>
+              )}
+            />
+          </View>
         )}
       </View>
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+  goBackButton: {
+    marginTop: 20,
   },
   inputContainer: {
-    backgroundColor: "#fff",
-    flexDirection: "row",
-    paddingVertical: 16,
-    borderRadius: 8,
-    paddingHorizontal: 16,
     marginVertical: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 7,
   },
   input: {
-    flex: 1,
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 16,
     fontSize: 16,
-    color: "#808080",
   },
   resultsContainer: {
+    flex: 1,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "#555",
     marginTop: 16,
   },
   errorText: {
-    marginTop: 16,
+    fontSize: 16,
     color: "red",
+    marginTop: 16,
+  },
+  noResultsText: {
+    fontSize: 16,
+    color: "#555",
+    marginTop: 16,
   },
   productItem: {
-    marginTop: 8,
+    marginVertical: 8,
+    padding: 16,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+  },
+  productName: {
+    fontSize: 18,
   },
 });
 

@@ -52,7 +52,7 @@ const ProductDetails = ({ navigation, route }) => {
           }}
         >
           <Image
-            source={{ uri: `http://192.168.137.174:8384/products/image/${item.image}` }}
+            source={{ uri: `http://192.168.137.244:8384/products/image/${item.image}` }}
             style={{
               marginTop: 40,
               width: "100%",

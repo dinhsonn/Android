@@ -30,7 +30,7 @@ const Product = forwardRef((props, ref) => {
 
   useEffect(() => {
     // Fetch data from the API
-    fetch("http://192.168.137.174:8384/products")
+    fetch("http://192.168.137.244:8384/products")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching data:", error));
@@ -62,7 +62,7 @@ const Product = forwardRef((props, ref) => {
           >
             
             <Image
-              source={{ uri: `http://192.168.137.174:8384/products/image/${item.image}` }}
+              source={{ uri: `http://192.168.137.244:8384/products/image/${item.image}` }}
               style={{ width: 140, height: 130, resizeMode: "cover" }}
             />
             <Text style={{ marginEnd:70}}>{item.name}</Text>

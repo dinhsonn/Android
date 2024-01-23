@@ -111,7 +111,7 @@
                   <View>
                     <Image
                       style={{ width: 140, height: 140, resizeMode: "contain" }}
-                      source={{ uri: `http://192.168.137.174:8384/products/image/${item.image}` }}
+                      source={{ uri: `http://192.168.137.244:8384/products/image/${item.image}` }}
                       />
                   </View>
     

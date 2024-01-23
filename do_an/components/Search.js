@@ -34,7 +34,7 @@ import { useNavigation } from "@react-navigation/native";
         />
         <TextInput
           style={{ paddingLeft: 8, fontSize: 16, color: "#808080" }}
-          placeholder={placeholder}
+          placeholder="Tìm sản phẩm"
         />
       </View>
     );

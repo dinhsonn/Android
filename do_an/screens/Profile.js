@@ -41,7 +41,7 @@ import {
       const fetchUserProfile = async () => {
         try {
           const response = await axios.get(
-            `http://192.168.137.174:8384/api/v1/users/login/${id}`
+            `http://192.168.137.244:8384/api/v1/users/login/${id}`
           );
           const { user } = response.data;
           setUser(user);

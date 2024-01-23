@@ -9,7 +9,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.137.174:8384/api/v1/users/login', {
+      const response = await fetch('http://192.168.137.244:8384/api/v1/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
